@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import SearchColumn from './components/SearchColumn.vue'
 import TodoListColumn from './components/TodoListColumn.vue'
 import TaskInfoColumn from './components/TaskInfoColumn.vue'
@@ -8,11 +8,17 @@ const selectedTask = ref(null);
 const searchQuery = ref('');
 const debouncedQuery = ref('');
 const selectedProvider = ref('json');
-const taskList = ref([
-  {name: 'Task 1', description: 'Details for Task 1' },
-  {name: 'Task 2', description: 'Details for Task 2' },
-  {name: 'Task 3', description: 'Details for Task 3' },
-]);
+const taskList = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await fetch('http://localhost:5000/api/tasks');
+    const data = await response.json();
+    taskList.value = data;
+  } catch (err) {
+    console.error('Failed to fetch tasks from backend:', err);
+  }
+});
 
 let debounceTimeout = null;
 

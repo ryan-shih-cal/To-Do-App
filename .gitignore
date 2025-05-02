@@ -1,24 +1,39 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# =========================
+# Frontend (Vue + Vite)
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+frontend/.vite/
+frontend/.DS_Store
 
-node_modules
-dist
-dist-ssr
-*.local
+# =========================
+# Backend (ASP.NET Core)
+# =========================
+backend/bin/
+backend/obj/
+backend/.vs/
+backend/.vscode/
+backend/*.user
+backend/*.suo
+backend/*.db
+backend/*.sqlite
+backend/.DS_Store
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# =========================
+# System / OS
+# =========================
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# =========================
+# Git
+# =========================
+*.log
+*.lock
+*.tmp
+*.swp
+*.bak
+*.orig
+*.rej
