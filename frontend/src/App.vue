@@ -30,8 +30,10 @@ async function fetchTasks() {
 
 async function addTask(task) {
   try {
-    await axios.post(`http://localhost:5000/api/todo?provider=${selectedProvider.value}`, task);
+    const response = await axios.post(`http://localhost:5000/api/todo?provider=${selectedProvider.value}`, task);
+    const createdTask = response.data;
     await fetchTasks();
+    setSelectedTask(createdTask);
   } catch (error) {
     console.error('Error adding task:', error);
   }

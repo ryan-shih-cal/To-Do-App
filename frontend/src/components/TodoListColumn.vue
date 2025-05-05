@@ -15,7 +15,6 @@ function addTask() {
     description: ""
   };
   emit('add-task', newTask);
-  selectTask(newTask);
 }
 
 function deleteTask(taskId) {
