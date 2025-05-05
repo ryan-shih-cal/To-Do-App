@@ -26,14 +26,12 @@ namespace ToDoApp.Services.Sqlite
 
         public async Task AddAsync(ToDoItem item)
         {
-            Console.WriteLine($"[SQLITE] Adding item: {item.Name}");
             _context.ToDoItems.Add(item);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(ToDoItem item)
         {
-            Console.WriteLine($"[SQLITE] Saving item: {item.Name}");
             var existing = await _context.ToDoItems.FindAsync(item.Id);
             if (existing != null)
             {
@@ -45,7 +43,6 @@ namespace ToDoApp.Services.Sqlite
 
         public async Task DeleteAsync(int id)
         {
-            Console.WriteLine($"[SQLITE] Deleting item: {id}");
             var item = await _context.ToDoItems.FindAsync(id);
             if (item != null)
             {

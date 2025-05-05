@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ToDoApp.Models;
 
 namespace ToDoApp.Services.Interfaces

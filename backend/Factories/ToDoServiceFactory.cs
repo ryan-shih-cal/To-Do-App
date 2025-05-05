@@ -1,6 +1,3 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using ToDoApp.Factory;
 using ToDoApp.Services.Interfaces;
 using ToDoApp.Services.Json;
 using ToDoApp.Services.Sqlite;
@@ -18,7 +15,6 @@ namespace ToDoApp.Factory
 
         public IToDoService GetService(string provider)
         {
-            Console.WriteLine($"[Factory] Selected provider: {provider}");
             return provider.ToLower() switch
             {
                 "sqlite" => _serviceProvider.GetRequiredService<SqliteToDoService>(),
