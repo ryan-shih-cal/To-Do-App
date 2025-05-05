@@ -5,7 +5,7 @@ const props = defineProps({
   tasks: Array,
   selectedTask: Object
 });
-const emit = defineEmits(['select-task', 'update-tasks']);
+const emit = defineEmits(['select-task', 'add-task', 'delete-task']);
 
 function selectTask(task) {
   emit('select-task', task);
@@ -16,13 +16,12 @@ function addTask() {
     name: "",
     description: ""
   };
-  emit('update-tasks', [...props.tasks, newTask])
-  selectTask(newTask)
+  emit('add-task', newTask);
+  selectTask(newTask);
 }
 
-function deleteTask(deleteTask) {
-  const postDeleteTasks = props.tasks.filter(task => task !== deleteTask);
-  emit('update-tasks', postDeleteTasks);
+function deleteTask(taskId) {
+  emit('delete-task', taskId);
 }
 </script>
 
@@ -42,8 +41,8 @@ function deleteTask(deleteTask) {
     </div>
  
     <div
-      v-for="(task, index) in tasks"
-      :key="index"
+      v-for="task in tasks"
+      :key="task.id"
       @click="selectTask(task)"
       class="task"
     >
@@ -57,7 +56,7 @@ function deleteTask(deleteTask) {
 
         <button
           title="Delete task"
-          @click.stop="deleteTask(task)"
+          @click.stop="deleteTask(task.id)"
           class="delete-button"
         >
           🗑️

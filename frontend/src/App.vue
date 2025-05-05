@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
+import axios from 'axios';
 import SearchColumn from './components/SearchColumn.vue'
 import TodoListColumn from './components/TodoListColumn.vue'
 import TaskInfoColumn from './components/TaskInfoColumn.vue'
@@ -7,19 +8,55 @@ import TaskInfoColumn from './components/TaskInfoColumn.vue'
 const selectedTask = ref(null);
 const searchQuery = ref('');
 const debouncedQuery = ref('');
-const selectedProvider = ref('json');
+const selectedProvider = ref('sqlite');
 const taskList = ref([]);
 
 onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost:5000/api/tasks');
-    const data = await response.json();
-    taskList.value = data;
-  } catch (err) {
-    console.error('Failed to fetch tasks from backend:', err);
-  }
+  fetchTasks();
 });
 
+watch(selectedProvider, async () => {
+  await fetchTasks();
+});
+
+async function fetchTasks() {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/todo?provider=${selectedProvider.value}`);
+    taskList.value = response.data;
+  } catch (error) {
+    console.error('Error fetching ToDo items:', error);
+  }
+}
+
+async function addTask(task) {
+  try {
+    await axios.post(`http://localhost:5000/api/todo?provider=${selectedProvider.value}`, task);
+    await fetchTasks();
+  } catch (error) {
+    console.error('Error adding task:', error);
+  }
+}
+
+async function deleteTask(taskId) {
+  try {
+    await axios.delete(`http://localhost:5000/api/todo/${taskId}?provider=${selectedProvider.value}`);
+    await fetchTasks();
+  } catch (error) {
+    console.error('Error deleting task:', error);
+  }
+  setSelectedTask(null);
+}
+
+async function editTask(task) {
+  try {
+    await axios.put(`http://localhost:5000/api/todo/${task.id}?provider=${selectedProvider.value}`, task);
+    await fetchTasks();
+  } catch (error) {
+    console.error('Error updating task:', error);
+  }
+}
+
+// Sets a debounce timer and watches for user input in the search bar
 let debounceTimeout = null;
 
 watch(searchQuery, (updatedQuery) => {
@@ -29,12 +66,13 @@ watch(searchQuery, (updatedQuery) => {
   }, 300);
 });
 
-function handleTaskSelect(task) {
+function setSelectedTask(task) {
   selectedTask.value = task;
 }
 
 function setProvider(provider) {
   selectedProvider.value = provider;
+  setSelectedTask(null);
 }
 
 function getFilteredTasks() {
@@ -60,8 +98,9 @@ function getFilteredTasks() {
     />
 
     <TodoListColumn
-      @select-task="handleTaskSelect"
-      @update-tasks="taskList = $event"
+      @select-task="setSelectedTask"
+      @add-task="addTask"
+      @delete-task="deleteTask"
       :tasks="getFilteredTasks()"
       :selectedTask="selectedTask"
       class="middle-column"
@@ -70,6 +109,7 @@ function getFilteredTasks() {
     <div class="vertical-divider"></div>
 
     <TaskInfoColumn
+      @edit-task="editTask"
       :task="selectedTask"
       class="right-column"
     />

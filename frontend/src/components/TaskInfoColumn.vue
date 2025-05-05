@@ -1,17 +1,47 @@
 <script setup>
-const props = defineProps(['task']);
+import { ref, watch } from 'vue';
+
+const props = defineProps({
+  task: Object
+});
+
+const emit = defineEmits(['edit-task']);
+
+// Save a local version of the task to prevent server flooding
+const localTask = ref({ name: '', description: '' });
+
+// Watch for external task change and clone it locally
+watch(
+  () => props.task,
+  (newTask) => {
+    if (newTask) {
+      localTask.value = { ...newTask };
+    }
+  },
+  { immediate: true }
+);
+
+function saveTask() {
+  emit('edit-task', localTask.value);
+}
 </script>
 
 <template>
 
   <div class="task-info-column">
 
-    <div v-if="task" class="task-info">
-      <input v-model="task.name" placeholder="Task Name" class="task-name" />
-      <textarea v-model="task.description" placeholder="Task Description" class="task-desc"></textarea>
+    <div v-if="props.task" class="task-info">
+      <input v-model="localTask.name" placeholder="Task Name" class="task-name" />
+      
+      <textarea v-model="localTask.description" placeholder="Task Description" class="task-desc"></textarea>
+
+      <div class="button-row">
+        <button @click="saveTask" class="save-button">Save</button>
+      </div>
+
     </div>
     <div v-else>
-      <p class="default-task">Select a task to view details</p>
+      <p class="no-task-text">Select a task to view details</p>
     </div>
 
   </div>
@@ -56,10 +86,29 @@ const props = defineProps(['task']);
   background-color: #f0f0f0;
 }
 
-.default-task {
+.no-task-text {
   padding: 50% 20%;
   color: black;
   background-color: transparent;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-button {
+  background-color: #2e91d3;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.save-button:hover {
+  background-color: #2176b8;
 }
 
 </style>
