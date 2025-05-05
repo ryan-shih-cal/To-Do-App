@@ -18,8 +18,10 @@ backend/.vscode/
 backend/*.user
 backend/*.suo
 backend/*.db
+backend/*.db-journal
 backend/*.sqlite
 backend/.DS_Store
+backend/todoitems.json
 
 # =========================
 # System / OS

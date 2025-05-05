@@ -98,17 +98,16 @@ function saveTask() {
 }
 
 .save-button {
-  background-color: #2e91d3;
-  color: white;
-  border: none;
+  margin-top: 10px;
   padding: 6px 12px;
+  color: white;
+  background-color: #2e91d3;
+  border: none;
   border-radius: 4px;
-  cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
 
 .save-button:hover {
   background-color: #2176b8;
 }
-
 </style>

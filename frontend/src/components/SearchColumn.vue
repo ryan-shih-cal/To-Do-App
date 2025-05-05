@@ -20,6 +20,7 @@ function updateQuery(query) {
 <template>
   <div class="menu-column">
 
+    <!-- Search Bar -->
     <div class="search-bar">
       <span class="search-icon">🔍</span>
     
@@ -32,6 +33,7 @@ function updateQuery(query) {
       />
     </div>
 
+    <!-- Provider Selection -->
     <p class="section">Provider Options</p>
 
     <div

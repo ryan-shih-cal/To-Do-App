@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from 'vue';
-
 const props = defineProps({
   tasks: Array,
   selectedTask: Object
@@ -27,6 +25,8 @@ function deleteTask(taskId) {
 
 <template>
   <div class="tasks-column">
+
+    <!-- Heading with 'My Tasks' title and Add Task Button -->
     <div class="header">
       <h1 class="title">My Tasks</h1>
 
@@ -40,8 +40,9 @@ function deleteTask(taskId) {
       </button>      
     </div>
  
+    <!-- Generated Task List -->
     <div
-      v-for="task in tasks"
+      v-for="(task, index) in tasks"
       :key="task.id"
       @click="selectTask(task)"
       class="task"
