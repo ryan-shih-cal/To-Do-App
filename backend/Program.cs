@@ -30,12 +30,11 @@ builder.Services.AddScoped<JsonToDoService>();
 builder.Services.AddScoped<IToDoServiceFactory, ToDoServiceFactory>();
 
 var app = builder.Build();
-Console.WriteLine($"DB Path: {Path.GetFullPath("todo.db")}");
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate(); // <----- This applies any pending migrations
+    db.Database.Migrate();
     
     if (!db.ToDoItems.Any())
 {

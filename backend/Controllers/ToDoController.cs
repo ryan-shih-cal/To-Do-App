@@ -18,7 +18,6 @@ namespace ToDoApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ToDoItem>>> GetAll([FromQuery] string provider = "sqlite")
         {
-            Console.WriteLine($"[Controller] Selected provider: {provider}");
             var service = _serviceFactory.GetService(provider);
             var items = await service.GetAllAsync();
             return Ok(items);

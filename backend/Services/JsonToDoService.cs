@@ -26,7 +26,6 @@ namespace ToDoApp.Services.Json
 
         public async Task AddAsync(ToDoItem item)
         {
-            Console.WriteLine($"[JSON] Adding item: {item.Name}");
             var items = await GetAllAsync();
             item.Id = items.Count > 0 ? items.Max(i => i.Id) + 1 : 1;
             items.Add(item);
@@ -35,7 +34,6 @@ namespace ToDoApp.Services.Json
 
         public async Task UpdateAsync(ToDoItem item)
         {
-            Console.WriteLine($"[JSON] Saving item: {item.Name}");
             var items = await GetAllAsync();
             var index = items.FindIndex(i => i.Id == item.Id);
             if (index != -1)
@@ -47,7 +45,6 @@ namespace ToDoApp.Services.Json
 
         public async Task DeleteAsync(int id)
         {
-            Console.WriteLine($"[JSON] Deleting item: {id}");
             var items = await GetAllAsync();
             items.RemoveAll(i => i.Id == id);
             await SaveAllAsync(items);
